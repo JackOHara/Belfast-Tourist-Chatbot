@@ -1,0 +1,43 @@
+get_all_location_info json
+location
+    belfast_parks
+        NAME
+        ADDRESS
+        POSTCODE
+        LONGITUDE
+        LATITUDE
+    belfast_bikes
+        STATION NUMBER
+        LOCATION
+        BNG_X
+        BNG_Y
+        LATITUDE
+        LONGITUDE
+        IG_EASTING
+        IG_NORTHING
+    belfast_toilets
+        NAME
+        ADDRESS
+        POSTCODE
+        RADAR key
+        BabyChanging  
+        LATITUDE
+        LONGITUDE
+    belfast_carparks
+        NAME
+        ADDRESS
+        POSTCODE
+        NON-DESIGNATED BAYS
+        X CO-ORDINATE
+        Y CO-ORDINATE
+        LONGITUDE
+        LATITUDE
+        BLUE BADGE BAYS
+        FAMILY FRIENDLY BAYS
+        E-CAR BAYS
+        TARIFF
+        CHARGED HOURS
+wiki
+    page_summary
+    page_title
+    page_url
