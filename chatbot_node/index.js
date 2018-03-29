@@ -17,7 +17,7 @@ var connector = new builder.ChatConnector({
 var bot = new builder.UniversalBot(connector);
 
 //Start server
-server.post('/', connector.listen());
+server.post('/hello', connector.listen());
 
 //Define bot behaviour
 var bot = new builder.UniversalBot(connector, function (session) {
@@ -33,10 +33,10 @@ var bot = new builder.UniversalBot(connector, function (session) {
             console.log("Message recieved from flask")
             processLocationInformation(body, session)
             //Make endDialog message dependent on result(whether it exists or not). Perhaps add another element to dictionary defining if result was successful.
-            session.endDialog("hhey hope u had fun. send another pic anytime m8");
+            session.endDialog();
         });
     } else {
-        var msg = 'Send me an image of a landmark bruv!';
+        var msg = 'Send me an image of a Belfast landmark!';
         session.endDialog(msg);
     }
 
@@ -53,7 +53,27 @@ var bot = new builder.UniversalBot(connector, function (session) {
 //Add scenario where a location is not found
 function processLocationInformation(locationJSONString, session) {
     var locationInformation = JSON.parse(locationJSONString)
-    session.send(locationInformation["wiki"]["page_title"])
+    var gmap_string1 = 'https://www.google.co.uk/maps/search/'
+    var gmap_string2 = ',+'
+    //https://www.google.co.uk/maps/search/54.593924,+-5.924265?sa=X&ved=0ahUKEwiOlo7xpZDaAhVbF8AKHRzPCwoQ8gEIKDAA
+    var park = locationInformation["location"]["belfast_parks"]["NAME"]
+    var park_gmap = gmap_string1 + locationInformation["location"]["belfast_parks"]["LATITUDE"] + gmap_string2 + locationInformation["location"]["belfast_parks"]["LONGITUDE"]
+    var toilets = locationInformation["location"]["belfast_toilets"]["NAME"]
+    var toilets_gmap = gmap_string1 + locationInformation["location"]["belfast_toilets"]["LATITUDE"] + gmap_string2 + locationInformation["location"]["belfast_parks"]["LONGITUDE"]
+    var bikes = locationInformation["location"]["belfast_bikes"]["LOCATION"]
+    var bikes_gmap = gmap_string1 + locationInformation["location"]["belfast_bikes"]["LATITUDE"] + gmap_string2 + locationInformation["location"]["belfast_parks"]["LONGITUDE"]
+    var carpark = locationInformation["location"]["belfast_carparks"]["NAME"]
+    var carpark_gmap = gmap_string1 + locationInformation["location"]["belfast_carparks"]["LATITUDE"] + gmap_string2 + locationInformation["location"]["belfast_parks"]["LONGITUDE"]
+
+    
+    var locationSummary = "The nearest bike station is " + locationInformation["location"]["belfast_bikes"]["LOCATION"] + '. [Directions](' + bikes_gmap + ') <br/>'
+    locationSummary += "The nearest public toilet is " + locationInformation["location"]["belfast_toilets"]["NAME"] + '. [Directions](' + toilets_gmap + ') <br/>'
+    locationSummary += "The nearest public park is " + locationInformation["location"]["belfast_parks"]["NAME"] + '. [Directions](' + park_gmap + ') <br/>'
+    locationSummary += "The nearest car park is " + locationInformation["location"]["belfast_carparks"]["NAME"] + '. [Directions](' + carpark_gmap + ') <br/>'
+
+    // session.send(locationInformation["wiki"]["page_title"])
+    console.log(locationInformation)
+
     session.send(locationInformation["wiki"]["page_summary"])
-    session.send("The nearest bike station is " + locationInformation["location"]["belfast_bikes"]["LOCATION"])
+    session.send(locationSummary);
 }
